@@ -226,13 +226,13 @@ class KeycloakAdmin:
 
     def create_realm(self, payload, skip_exists=False):
         """
-        Create a client
+        Create a realm
 
         ClientRepresentation: http://www.keycloak.org/docs-api/3.3/rest-api/index.html#_realmrepresentation
 
         :param skip_exists: Skip if Realm already exist.
         :param payload: RealmRepresentation
-        :return:  Keycloak server response (UserRepresentation)
+        :return:  Keycloak server response (RealmRepresentation)
         """
 
         data_raw = self.raw_post(URL_ADMIN_REALMS,
