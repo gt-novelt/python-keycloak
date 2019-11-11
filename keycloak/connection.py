@@ -52,6 +52,17 @@ class ConnectionManager(object):
         self._s.mount('https://', HTTPAdapter(max_retries=1))
         self._s.mount('http://', HTTPAdapter(max_retries=1))
 
+        # retry once to reset connection with Keycloak after  tomcat's ConnectionTimeout
+        # see https://github.com/marcospereirampj/python-keycloak/issues/36
+        for protocol in ('https://', 'http://'):
+            adapter = HTTPAdapter(max_retries=1)
+            # adds POST to retry whitelist
+            method_whitelist = set(adapter.max_retries.method_whitelist)
+            method_whitelist.add('POST')
+            adapter.max_retries.method_whitelist = frozenset(method_whitelist)
+
+            self._s.mount(protocol, adapter)
+
     @property
     def base_url(self):
         """ Return base url in use for requests to the server. """
