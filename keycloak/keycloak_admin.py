@@ -59,7 +59,7 @@ class KeycloakAdmin:
     _token = None
 
     def __init__(self, server_url, username, password, realm_name='master', client_id='admin-cli', verify=True, client_secret_key=None,
-                 auto_refresh_token=None):
+                 user_realm_name=None, auto_refresh_token=None):
         """
 
         :param server_url: Keycloak server url
@@ -75,6 +75,7 @@ class KeycloakAdmin:
         self.username = username
         self.password = password
         self.realm_name = realm_name
+        self.user_realm_name = user_realm_name or realm_name
         self.client_id = client_id
         self.verify = verify
         self.client_secret_key = client_secret_key
@@ -1126,7 +1127,7 @@ class KeycloakAdmin:
 
     def get_token(self):
         self.keycloak_openid = KeycloakOpenID(server_url=self.server_url, client_id=self.client_id,
-                                              realm_name=self.realm_name, verify=self.verify,
+                                              realm_name=self.user_realm_name, verify=self.verify,
                                               client_secret_key=self.client_secret_key)
 
         grant_type = ["password"]
